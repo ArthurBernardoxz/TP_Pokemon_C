@@ -1,5 +1,4 @@
-3
-5
+3 5
 Squirtle 10 15 15 água
 Vulpix 15 15 15 fogo
 Onix 5 20 20 pedra
@@ -7,3 +6,4 @@ Golem 20 5 10 pedra
 Charmander 20 15 12 fogo
 Pikachu 20 20 20 elétrico
 Snorlax 20 10 5 água 
+Squirtle 10 15 15 água
