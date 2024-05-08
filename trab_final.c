@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-// Definindo a estrutura do Pokémon
+// Definição da estrutura do Pokémon
 typedef struct {
     char nome[20];
     int ataque;
@@ -11,112 +11,136 @@ typedef struct {
     char tipo[10];
 } Pokemon;
 
+// Função para calcular o dano de um ataque
+int calcularDano(Pokemon atacante, Pokemon defensor) {
+    int dano = atacante.ataque - defensor.defesa;
+
+    // Verifica a vantagem de tipo
+    if(strcmp(atacante.tipo, defensor.tipo) == 0){
+        dano = dano;
+    } else if((strcmp(atacante.tipo, "Elétrico") == 0 && strcmp(defensor.tipo, "Água") == 0) || (strcmp(atacante.tipo, "Água") == 0 && strcmp(defensor.tipo, "Fogo") == 0) || (strcmp(atacante.tipo, "Fogo") == 0 && strcmp(defensor.tipo, "Gelo")==0) || (strcmp(atacante.tipo, "Gelo") == 0 && strcmp(defensor.tipo, "Pedra")==0) || (strcmp(atacante.tipo, "Pedra") == 0 && strcmp(defensor.tipo, "Elétrico")==0)) {
+        dano = dano * 1.2; // Aumenta o dano em 20% se há vantagem de tipo
+    } else if((strcmp(atacante.tipo, "Elétrico") == 0 && strcmp(defensor.tipo, "Pedra") == 0) || (strcmp(atacante.tipo, "Água") == 0 && strcmp(defensor.tipo, "Elétrico") == 0) || (strcmp(atacante.tipo, "Fogo") == 0 && strcmp(defensor.tipo, "Água")==0) || (strcmp(atacante.tipo, "Gelo") == 0 && strcmp(defensor.tipo, "Fogo")==0) || (strcmp(atacante.tipo, "Pedra") == 0 && strcmp(defensor.tipo, "Gelo")==0)) {
+        dano = dano * 0.8; // Reduz o dano em 20% se há desvantagem de tipo
+    }
+
+    // Se o dano for menor que zero, não causa dano
+    if (dano < 0) {
+        dano = 0;
+    }
+
+    return dano;
+}
+
 // Função para ler dados de Pokémon de um arquivo
-void ler_dados_pokemon(FILE *arquivo, Pokemon pokemons[], int n) {
-    for (int i = 0; i < n; i++) {
+void lerDados(FILE *arquivo, Pokemon pokemons[], int n) {
+    for(int i = 0; i < n; i++) {
+        // Lê os dados de cada Pokémon do arquivo e os armazena na estrutura correspondente
         fscanf(arquivo, "%s %d %d %d %s", pokemons[i].nome, &pokemons[i].ataque, &pokemons[i].defesa, &pokemons[i].vida, pokemons[i].tipo);
     }
 }
 
-// Função para determinar o dano causado por um ataque
-int calcular_dano(Pokemon atacante, Pokemon defensor) {
-    int dano = atacante.ataque - defensor.defesa;
-    if (strcmp(atacante.tipo, defensor.tipo) == 0) {
-        dano = dano / 2;
-    } else if ((strcmp(atacante.tipo, "Elétrico") == 0 && strcmp(defensor.tipo, "Água") == 0) ||
-               (strcmp(atacante.tipo, "Água") == 0 && strcmp(defensor.tipo, "Fogo") == 0) ||
-               (strcmp(atacante.tipo, "Fogo") == 0 && strcmp(defensor.tipo, "Gelo") == 0) ||
-               (strcmp(atacante.tipo, "Gelo") == 0 && strcmp(defensor.tipo, "Pedra") == 0) ||
-               (strcmp(atacante.tipo, "Pedra") == 0 && strcmp(defensor.tipo, "Elétrico") == 0)) {
-        dano = dano * 1.2;
-    } else if ((strcmp(atacante.tipo, "Água") == 0 && strcmp(defensor.tipo, "Elétrico") == 0) ||
-               (strcmp(atacante.tipo, "Fogo") == 0 && strcmp(defensor.tipo, "Água") == 0) ||
-               (strcmp(atacante.tipo, "Gelo") == 0 && strcmp(defensor.tipo, "Fogo") == 0) ||
-               (strcmp(atacante.tipo, "Pedra") == 0 && strcmp(defensor.tipo, "Gelo") == 0) ||
-               (strcmp(atacante.tipo, "Elétrico") == 0 && strcmp(defensor.tipo, "Pedra") == 0)) {
-        dano = dano / 1.2;
-    }
-    return dano;
-}
-
 // Função para simular uma batalha entre dois Pokémon
-void batalhar(Pokemon *p1, Pokemon *p2) {
-    int dano_p1 = calcular_dano(*p1, *p2);
-    int dano_p2 = calcular_dano(*p2, *p1);
+int batalhar(Pokemon *p1, Pokemon *p2) {
+    while (p1->vida > 0 && p2->vida > 0) {
+        int danoP1 = calcularDano(*p1, *p2);
+        int danoP2 = calcularDano(*p2, *p1);
 
-    if (dano_p1 > dano_p2) {
-        printf("%s venceu %s\n", p1->nome, p2->nome);
-    } else if (dano_p2 > dano_p1) {
-        printf("%s venceu %s\n", p2->nome, p1->nome);
-    } else {
-        printf("Empate entre %s e %s\n", p1->nome, p2->nome);
-    }
-}
+        // Se o dano de um atacante for menor que a defesa do defensor, o atacante perde 1 ponto de vida
+        if (danoP1 <= p2->defesa) {
+            p1->vida -= 1;
+        }
+        if (danoP2 <= p1->defesa) {
+            p2->vida -= 1;
+        }
 
-// Função principal do jogo
-void jogar(char *arquivo) {
-    FILE *file = fopen(arquivo, "r");
-    if (file == NULL) {
-        printf("Erro ao abrir o arquivo.\n");
-        return;
-    }
-
-    int numero_pokemons_p1, numero_pokemons_p2;
-    fscanf(file, "%d %d", &numero_pokemons_p1, &numero_pokemons_p2);
-
-    Pokemon *pokemons1 = malloc(numero_pokemons_p1 * sizeof(Pokemon));
-    Pokemon *pokemons2 = malloc(numero_pokemons_p2 * sizeof(Pokemon));
-
-    ler_dados_pokemon(file, pokemons1, numero_pokemons_p1);
-    ler_dados_pokemon(file, pokemons2, numero_pokemons_p2);
-
-    fclose(file);
-
-    // Simulando as batalhas
-    int vitorias_p1 = 0, vitorias_p2 = 0;
-    printf("Como saída, o programa deverá imprimir o resultado de cada batalha realizada entre os treinadores,\n"
-           "o jogador que venceu, seus pokémon sobreviventes e os pokémon derrotados do jogador 1 e do jogador 2, respectivamente.\n\n");
-
-    for (int i = 0; i < numero_pokemons_p1; i++) {
-        for (int j = 0; j < numero_pokemons_p2; j++) {
-            printf("Batalha entre %s e %s:\n", pokemons1[i].nome, pokemons2[j].nome);
-            batalhar(&pokemons1[i], &pokemons2[j]);
-            printf("\n");
+        // Verifica se algum Pokémon ficou com a vida zerada
+        if (p1->vida <= 0) {
+            printf("%s venceu %s\n", p2->nome, p1->nome);
+            return 2; // Retorna 2 indicando que p2 venceu
+        } else if (p2->vida <= 0) {
+            printf("%s venceu %s\n", p1->nome, p2->nome);
+            return 1; // Retorna 1 indicando que p1 venceu
         }
     }
+    return 0; // Empate
+}
 
-    // Contando vitorias
-    for (int i = 0; i < numero_pokemons_p1; i++) {
-        for (int j = 0; j < numero_pokemons_p2; j++) {
-            int dano_p1 = calcular_dano(pokemons1[i], pokemons2[j]);
-            int dano_p2 = calcular_dano(pokemons2[j], pokemons1[i]);
+// Função principal do programa
+int main() {
+    FILE *file = fopen("teste.txt", "r");
+    if(file == NULL) {
+        perror("Erro ao abrir o arquivo.\n");
+        return 1; // Retorna 1 em caso de erro ao abrir o arquivo
+    }
 
-            if (dano_p1 > dano_p2) {
-                vitorias_p1++;
-            } else if (dano_p2 > dano_p1) {
-                vitorias_p2++;
+    // Variáveis para armazenar o número de Pokémon de cada jogador e o resultado das batalhas
+    int numeroPokemonsP1, numeroPokemonsP2, vitoriasP1 = 0, vitoriasP2 = 0, resultadoBatalha;
+
+    // Lê o número de Pokémon de cada jogador do arquivo
+    fscanf(file, "%d %d", &numeroPokemonsP1, &numeroPokemonsP2);
+
+    // Aloca memória para as equipes de Pokémon de cada jogador
+    Pokemon *equipeP1 = malloc(numeroPokemonsP1 * sizeof(Pokemon));
+    Pokemon *equipeP2 = malloc(numeroPokemonsP2 * sizeof(Pokemon));
+
+    // Lê os dados dos Pokémon de cada jogador do arquivo
+    lerDados(file, equipeP1, numeroPokemonsP1);
+    lerDados(file, equipeP2, numeroPokemonsP2);
+
+    // Fecha o arquivo após a leitura dos dados
+    fclose(file);
+
+    // Simula as batalhas entre os Pokémon de ambos os jogadores
+    for (int i = 0; i < numeroPokemonsP1; i++) {
+        for (int j = 0; j < numeroPokemonsP2; j++) {
+            resultadoBatalha = batalhar(&equipeP1[i], &equipeP2[j]);
+            if (resultadoBatalha == 1) {
+                vitoriasP1++; // Incrementa o número de vitórias do jogador 1
+            } else if (resultadoBatalha == 2) {
+                vitoriasP2++; // Incrementa o número de vitórias do jogador 2
             }
         }
     }
 
-    // Exibindo resultados finais
-    printf("Jogador 1 ");
-    if (vitorias_p1 > vitorias_p2) {
-        printf("venceu\n");
-    } else if (vitorias_p2 > vitorias_p1) {
-        printf("venceu\n");
+    // Imprime o resultado do jogo (quem venceu ou se houve empate)
+    if(vitoriasP1 > vitoriasP2){
+        printf("Jogador 1 venceu\n");
+    } else if(vitoriasP1 < vitoriasP2){
+        printf("Jogador 2 venceu\n");
     } else {
-        printf("e Jogador 2 empataram\n");
+        printf("Empate\n");
     }
 
-    printf("Pokémon sobreviventes do Jogador 1:\n");
-    for (int i = 0; i < numero_pokemons_p1; i++) {
-        printf("%s\n", pokemons1[i].nome);
+    // Imprime os Pokémon sobreviventes de cada jogador
+    printf("Pokemons Sobreviventes\n");
+    for(int y = 0; y < numeroPokemonsP1; y++){
+        if(equipeP1[y].vida > 0){
+            printf("%s\n", equipeP1[y].nome);
+        }
+    }
+    for(int y = 0; y < numeroPokemonsP2; y++){
+        if(equipeP2[y].vida > 0){
+            printf("%s\n", equipeP2[y].nome);
+        }
     }
 
-    printf("Pokémon derrotados do Jogador 1:\n");
-    for (int i = 0; i < numero_pokemons_p1; i++) {
-        printf("%s\n", pokemons1[i].nome);
+    // Imprime os Pokémon derrotados de cada jogador
+    printf("Pokemons Derrotados\n");
+    for(int z = 0; z < numeroPokemonsP1; z++){
+        if(equipeP1[z].vida <= 0){
+            printf("%s ", equipeP1[z].nome);
+        }
+    }
+    for(int z = 0; z < numeroPokemonsP2; z++){
+        if(equipeP2[z].vida <= 0){
+            printf("%s ", equipeP2[z].nome);
+        }
     }
 
-    printf("Pokémon sob
+    // Libera a memória alocada para as equipes de Pokémon
+    free(equipeP1);
+    free(equipeP2);
+
+    return 0; // Retorna 0 indicando sucesso
+}
