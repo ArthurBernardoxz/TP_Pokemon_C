@@ -18,9 +18,9 @@ int calcularDano(Pokemon atacante, Pokemon defensor) {
     // Verifica a vantagem de tipo
     if(strcmp(atacante.tipo, defensor.tipo) == 0){
         dano = dano;
-    } else if((strcmp(atacante.tipo, "Elétrico") == 0 && strcmp(defensor.tipo, "Água") == 0) || (strcmp(atacante.tipo, "Água") == 0 && strcmp(defensor.tipo, "Fogo") == 0) || (strcmp(atacante.tipo, "Fogo") == 0 && strcmp(defensor.tipo, "Gelo")==0) || (strcmp(atacante.tipo, "Gelo") == 0 && strcmp(defensor.tipo, "Pedra")==0) || (strcmp(atacante.tipo, "Pedra") == 0 && strcmp(defensor.tipo, "Elétrico")==0)) {
+    } else if((strcmp(atacante.tipo, "elétrico") == 0 && strcmp(defensor.tipo, "água") == 0) || (strcmp(atacante.tipo, "água") == 0 && strcmp(defensor.tipo, "fogo") == 0) || (strcmp(atacante.tipo, "fogo") == 0 && strcmp(defensor.tipo, "gelo")==0) || (strcmp(atacante.tipo, "gelo") == 0 && strcmp(defensor.tipo, "pedra")==0) || (strcmp(atacante.tipo, "pedra") == 0 && strcmp(defensor.tipo, "elétrico")==0)) {
         dano = dano * 1.2; // Aumenta o dano em 20% se há vantagem de tipo
-    } else if((strcmp(atacante.tipo, "Elétrico") == 0 && strcmp(defensor.tipo, "Pedra") == 0) || (strcmp(atacante.tipo, "Água") == 0 && strcmp(defensor.tipo, "Elétrico") == 0) || (strcmp(atacante.tipo, "Fogo") == 0 && strcmp(defensor.tipo, "Água")==0) || (strcmp(atacante.tipo, "Gelo") == 0 && strcmp(defensor.tipo, "Fogo")==0) || (strcmp(atacante.tipo, "Pedra") == 0 && strcmp(defensor.tipo, "Gelo")==0)) {
+    } else if((strcmp(atacante.tipo, "elétrico") == 0 && strcmp(defensor.tipo, "pedra") == 0) || (strcmp(atacante.tipo, "água") == 0 && strcmp(defensor.tipo, "elétrico") == 0) || (strcmp(atacante.tipo, "fogo") == 0 && strcmp(defensor.tipo, "água")==0) || (strcmp(atacante.tipo, "gelo") == 0 && strcmp(defensor.tipo, "fogo")==0) || (strcmp(atacante.tipo, "pedra") == 0 && strcmp(defensor.tipo, "gelo")==0)) {
         dano = dano * 0.8; // Reduz o dano em 20% se há desvantagem de tipo
     }
 
@@ -68,7 +68,7 @@ int batalhar(Pokemon *p1, Pokemon *p2) {
 
 // Função principal do programa
 int main() {
-    FILE *file = fopen("teste.txt", "r");
+    FILE *file = fopen("teste2.txt", "r");
     if(file == NULL) {
         perror("Erro ao abrir o arquivo.\n");
         return 1; // Retorna 1 em caso de erro ao abrir o arquivo
