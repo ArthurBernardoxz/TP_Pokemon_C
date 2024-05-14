@@ -165,6 +165,6 @@ void jogar(char *arquivo){
 
 // Função principal do programa
 int main() {
-    jogar("teste2.txt"); // Chama a função jogar e passa o nome do arquivo como parametro
+    jogar("teste.txt"); // Chama a função jogar e passa o nome do arquivo como parametro
     return 0; // Retorno da funcao principal
 }
