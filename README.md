@@ -1,9 +1,5 @@
 # Documentação do Trabalho Prático
 
-Nome: Arthur Bernardo Alves Costa  
-Matrícula: 2024099100  
-Curso: Programação e Desenvolvimento de Software  
-
 O programa simula uma batalha Pokémon entre dois jogadores. Cada jogador possui um número determinado de Pokémon, e eles se enfrentam até que um dos jogadores não tenha mais Pokémon "vivos" naquela partida.
 
 ## Estrutura do Programa
