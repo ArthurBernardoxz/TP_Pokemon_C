@@ -14,8 +14,15 @@ typedef struct {
 // Função para ler dados de Pokémon de um arquivo
 void ler_dados(FILE *arquivo, Pokemon pokemons[], int n) {
     // Loop para ler os dados de cada Pokémon do arquivo
-    for(int i = 0; i < n; i++){
-        fscanf(arquivo, "%s %d %d %d %s", pokemons[i].nome, &pokemons[i].ataque, &pokemons[i].defesa, &pokemons[i].vida, pokemons[i].tipo);
+    for(int i = 0; i < n; i++) {
+        if (fscanf(arquivo, "%s %d %d %d %s", pokemons[i].nome, &pokemons[i].ataque, &pokemons[i].defesa, &pokemons[i].vida, pokemons[i].tipo) != 5) { //tratamento de erros para o caso de falta de dados para a execução do programa 
+            printf("Erro ao ler os dados do arquivo!\n");
+            exit(1);
+        }
+        if (strlen(pokemons[i].nome) == 0 || pokemons[i].ataque <= 0 || pokemons[i].defesa <= 0 || pokemons[i].vida <= 0) { // tratamento de erros para o caso de valores negativos
+            printf("Erro os valores para as variaveis inteiras (ataque, defesa e vida) devem ser todos inteiros!\n");
+            exit(1);
+        }
     }
 }
 
