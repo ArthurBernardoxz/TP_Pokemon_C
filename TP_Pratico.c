@@ -32,21 +32,21 @@ void ler_dados(FILE *arquivo, Pokemon pokemons[], int n) {
 
 // Função para calcular o dano de acordo com o tipo dos pokemons ao atacar
 int calcular_dano(Pokemon atacante, Pokemon defensor) {
-    int dano = atacante.ataque - defensor.defesa;
-    if(strcmp(atacante.tipo, defensor.tipo) == 0){
-        dano = dano; // Dano padrão se os tipos forem iguais
-    } else if((strcmp(atacante.tipo, "Elétrico") == 0 && strcmp(defensor.tipo, "Água") == 0)||
+    int dano;
+    if((strcmp(atacante.tipo, "Elétrico") == 0 && strcmp(defensor.tipo, "Água") == 0)||
      (strcmp(atacante.tipo, "Água") == 0 && strcmp(defensor.tipo, "Fogo") == 0) || 
      (strcmp(atacante.tipo, "Fogo") == 0 && strcmp(defensor.tipo, "Gelo")==0) || 
      (strcmp(atacante.tipo, "Gelo") == 0 && strcmp(defensor.tipo, "Pedra")==0) || 
      (strcmp(atacante.tipo, "Pedra") == 0 && strcmp(defensor.tipo, "Elétrico")==0)) {
-        dano = dano * 1.2; // Aumenta o dano em 20% para relações de tipo favoráveis
+        dano = (atacante.ataque * 1.2) - defensor.defesa; // Aumenta o dano em 20% para relações de tipo favoráveis
     } else if((strcmp(atacante.tipo, "Elétrico") == 0 && strcmp(defensor.tipo, "Pedra") == 0) ||
      (strcmp(atacante.tipo, "Água") == 0 && strcmp(defensor.tipo, "Elétrico") == 0) ||
       (strcmp(atacante.tipo, "Fogo") == 0 && strcmp(defensor.tipo, "Água")==0) ||
        (strcmp(atacante.tipo, "Gelo") == 0 && strcmp(defensor.tipo, "Fogo")==0) ||
         (strcmp(atacante.tipo, "Pedra") == 0 && strcmp(defensor.tipo, "Gelo")==0)) {
-        dano = dano * 0.8; // Reduz o dano em 20% para relações de tipo desfavoráveis
+        dano = (atacante.ataque * 0.8) - defensor.defesa; // Reduz o dano em 20% para relações de tipo desfavoráveis
+    } else {
+        dano = atacante.ataque - defensor.defesa; // Dano padrão se os tipos forem iguais
     }
 
     return dano; // Retorna o dano calculado
