@@ -2,13 +2,17 @@
 #include <stdlib.h> // Inclui a biblioteca com as funções para alocação de memória
 #include <string.h> // Inclui a biblioteca para conseguirmos manipular strings
 
+#define TAMANHO_NOME 20
+#define TAMANHO_TIPO 10
+
+
 // Aqui definimos a variável estruturada Pokémon
 typedef struct {
-    char nome[20]; // Variável para o nome do pokémon
+    char nome[TAMANHO_NOME]; // Variável para o nome do pokémon
     int ataque; // Variável para os pontos de ataque do pokémon
     int defesa; // Variável para os pontos de defesa do pokémon
     int vida; // Variável para os pontos de vida do pokémon
-    char tipo[10]; // Variável para o tipo do pokémon
+    char tipo[TAMANHO_TIPO]; // Variável para o tipo do pokémon
 } Pokemon;
 
 // Função para ler dados de Pokémon de um arquivo
@@ -101,10 +105,26 @@ void jogar(char *arquivo){
     int numero_pokemons_p1, numero_pokemons_p2, n_vitorias_P1 = 0, n_vitorias_P2 = 0, vitoria_atual; //Declaracao das variaveis utilizadas durante o programa
     fscanf(file, "%d %d", &numero_pokemons_p1, &numero_pokemons_p2); // Lê do arquivo o número de pokemons do jogador 1 e 2 e atribui as respectivas variaveis
 
+    //verificacao de limites de pokemons de cada jogador
+    if(numero_pokemons_p1 > 100 || numero_pokemons_p2 > 100){
+        perror("Erro: o numero maximo de pokemons para cada jogador e 100");
+        return;
+    }
+
     // ALocamos dinamicamente a quantidade de mémoria necessaria para armazenas os pokemons de cada jogador
     Pokemon *P1 = malloc(numero_pokemons_p1 * sizeof(Pokemon));
+    //Verificação de erro de alocacao
+    if(P1 == NULL){
+        printf("Erro ao alocar memoria para o Jogador 1");
+        free(P1);
+        exit(1);
+    }
     Pokemon *P2 = malloc(numero_pokemons_p2 * sizeof(Pokemon));
-
+    if(P2 == NULL){
+        printf("Erro ao alocar memoria para o Jogador 2");
+        free(P2);
+        exit(1);
+    }
     // Lê os dados dos pokémons de cada jogador do arquivo
     ler_dados(file, P1, numero_pokemons_p1);
     ler_dados(file, P2, numero_pokemons_p2);
