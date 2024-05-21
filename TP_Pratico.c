@@ -35,15 +35,15 @@ int calcular_dano(Pokemon atacante, Pokemon defensor) {
     int dano;
     if((strcmp(atacante.tipo, "Elétrico") == 0 && strcmp(defensor.tipo, "Água") == 0)||
      (strcmp(atacante.tipo, "Água") == 0 && strcmp(defensor.tipo, "Fogo") == 0) || 
-     (strcmp(atacante.tipo, "Fogo") == 0 && strcmp(defensor.tipo, "Gelo")==0) || 
-     (strcmp(atacante.tipo, "Gelo") == 0 && strcmp(defensor.tipo, "Pedra")==0) || 
-     (strcmp(atacante.tipo, "Pedra") == 0 && strcmp(defensor.tipo, "Elétrico")==0)) {
+     (strcmp(atacante.tipo, "Fogo") == 0 && strcmp(defensor.tipo, "Gelo")== 0) || 
+     (strcmp(atacante.tipo, "Gelo") == 0 && strcmp(defensor.tipo, "Pedra")== 0) || 
+     (strcmp(atacante.tipo, "Pedra") == 0 && strcmp(defensor.tipo, "Elétrico")== 0)) {
         dano = (atacante.ataque * 1.2) - defensor.defesa; // Aumenta o dano em 20% para relações de tipo favoráveis
     } else if((strcmp(atacante.tipo, "Elétrico") == 0 && strcmp(defensor.tipo, "Pedra") == 0) ||
      (strcmp(atacante.tipo, "Água") == 0 && strcmp(defensor.tipo, "Elétrico") == 0) ||
-      (strcmp(atacante.tipo, "Fogo") == 0 && strcmp(defensor.tipo, "Água")==0) ||
-       (strcmp(atacante.tipo, "Gelo") == 0 && strcmp(defensor.tipo, "Fogo")==0) ||
-        (strcmp(atacante.tipo, "Pedra") == 0 && strcmp(defensor.tipo, "Gelo")==0)) {
+      (strcmp(atacante.tipo, "Fogo") == 0 && strcmp(defensor.tipo, "Água")== 0) ||
+       (strcmp(atacante.tipo, "Gelo") == 0 && strcmp(defensor.tipo, "Fogo")== 0) ||
+        (strcmp(atacante.tipo, "Pedra") == 0 && strcmp(defensor.tipo, "Gelo")== 0)) {
         dano = (atacante.ataque * 0.8) - defensor.defesa; // Reduz o dano em 20% para relações de tipo desfavoráveis
     } else {
         dano = atacante.ataque - defensor.defesa; // Dano padrão se os tipos forem iguais
@@ -192,6 +192,6 @@ void jogar(char *arquivo){
 
 // Função principal do programa
 int main() {
-    jogar("teste.txt"); // Chama a função jogar e passa o nome do arquivo como parametro
+    jogar("teste2.txt"); // Chama a função jogar e passa o nome do arquivo como parametro
     return 0; // Retorno da funcao principal
 }
