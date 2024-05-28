@@ -32,24 +32,25 @@ void ler_dados(FILE *arquivo, Pokemon pokemons[], int n) {
 
 // Função para calcular o dano de acordo com o tipo dos pokemons ao atacar
 int calcular_dano(Pokemon atacante, Pokemon defensor) {
-    int dano;
+    float dano; // Usando float para precisão nos cálculos
+
     if((strcmp(atacante.tipo, "eletrico") == 0 && strcmp(defensor.tipo, "agua") == 0)||
-     (strcmp(atacante.tipo, "agua") == 0 && strcmp(defensor.tipo, "fogo") == 0) || 
-     (strcmp(atacante.tipo, "fogo") == 0 && strcmp(defensor.tipo, "gelo")== 0) || 
-     (strcmp(atacante.tipo, "gelo") == 0 && strcmp(defensor.tipo, "pedra")== 0) || 
-     (strcmp(atacante.tipo, "pedra") == 0 && strcmp(defensor.tipo, "eletrico")== 0)) {
+       (strcmp(atacante.tipo, "agua") == 0 && strcmp(defensor.tipo, "fogo") == 0) || 
+       (strcmp(atacante.tipo, "fogo") == 0 && strcmp(defensor.tipo, "gelo")== 0) || 
+       (strcmp(atacante.tipo, "gelo") == 0 && strcmp(defensor.tipo, "pedra")== 0) || 
+       (strcmp(atacante.tipo, "pedra") == 0 && strcmp(defensor.tipo, "eletrico")== 0)) {
         dano = atacante.ataque * 1.2; // Aumenta o dano em 20% para relações de tipo favoráveis
     } else if((strcmp(atacante.tipo, "eletrico") == 0 && strcmp(defensor.tipo, "pedra") == 0) ||
-     (strcmp(atacante.tipo, "agua") == 0 && strcmp(defensor.tipo, "eletrico") == 0) ||
-      (strcmp(atacante.tipo, "fogo") == 0 && strcmp(defensor.tipo, "agua")== 0) ||
-       (strcmp(atacante.tipo, "gelo") == 0 && strcmp(defensor.tipo, "fogo")== 0) ||
-        (strcmp(atacante.tipo, "pedra") == 0 && strcmp(defensor.tipo, "gelo")== 0)) {
+              (strcmp(atacante.tipo, "agua") == 0 && strcmp(defensor.tipo, "eletrico") == 0) ||
+              (strcmp(atacante.tipo, "fogo") == 0 && strcmp(defensor.tipo, "agua")== 0) ||
+              (strcmp(atacante.tipo, "gelo") == 0 && strcmp(defensor.tipo, "fogo")== 0) ||
+              (strcmp(atacante.tipo, "pedra") == 0 && strcmp(defensor.tipo, "gelo")== 0)) {
         dano = atacante.ataque * 0.8; // Reduz o dano em 20% para relações de tipo desfavoráveis
     } else {
         dano = atacante.ataque; // Dano padrão se os tipos forem iguais
     }
 
-    return dano; // Retorna o dano calculado
+    return (int)dano; // Converte o dano de volta para int antes de retornar
 }
 
 // Função para simular a luta entre dois pokemons
@@ -192,6 +193,6 @@ void jogar(char *arquivo){
 
 // Função principal do programa
 int main() {
-    jogar("teste.txt"); // Chama a função jogar e passa o nome do arquivo como parametro
+    jogar("teste2.txt"); // Chama a função jogar e passa o nome do arquivo como parametro
     return 0; // Retorno da funcao principal
 }
