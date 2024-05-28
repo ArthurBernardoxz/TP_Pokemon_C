@@ -1,4 +1,5 @@
 {
+    "version": "2.0.0",
     "tasks": [
         {
             "type": "cppbuild",
@@ -9,18 +10,19 @@
                 "-g",
                 "${file}",
                 "-o",
-                "${fileDirname}\\${fileBasenameNoExtension}.exe",
-                ""
+                "${workspaceFolder}/build/Debug/outDebug"  // Caminho do executável
             ],
             "options": {
-                "cwd": "C:/MinGW/bin"
+                "cwd": "${workspaceFolder}"  // Define o diretório de trabalho como a pasta do projeto
             },
             "problemMatcher": [
                 "$gcc"
             ],
-            "group": "build",
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
             "detail": "Tarefa gerada pelo Depurador."
         }
-    ],
-    "version": "2.0.0"
+    ]
 }

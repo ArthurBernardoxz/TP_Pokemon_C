@@ -33,20 +33,20 @@ void ler_dados(FILE *arquivo, Pokemon pokemons[], int n) {
 // Função para calcular o dano de acordo com o tipo dos pokemons ao atacar
 int calcular_dano(Pokemon atacante, Pokemon defensor) {
     int dano;
-    if((strcmp(atacante.tipo, "Elétrico") == 0 && strcmp(defensor.tipo, "Água") == 0)||
-     (strcmp(atacante.tipo, "Água") == 0 && strcmp(defensor.tipo, "Fogo") == 0) || 
-     (strcmp(atacante.tipo, "Fogo") == 0 && strcmp(defensor.tipo, "Gelo")== 0) || 
-     (strcmp(atacante.tipo, "Gelo") == 0 && strcmp(defensor.tipo, "Pedra")== 0) || 
-     (strcmp(atacante.tipo, "Pedra") == 0 && strcmp(defensor.tipo, "Elétrico")== 0)) {
-        dano = (atacante.ataque * 1.2) - defensor.defesa; // Aumenta o dano em 20% para relações de tipo favoráveis
-    } else if((strcmp(atacante.tipo, "Elétrico") == 0 && strcmp(defensor.tipo, "Pedra") == 0) ||
-     (strcmp(atacante.tipo, "Água") == 0 && strcmp(defensor.tipo, "Elétrico") == 0) ||
-      (strcmp(atacante.tipo, "Fogo") == 0 && strcmp(defensor.tipo, "Água")== 0) ||
-       (strcmp(atacante.tipo, "Gelo") == 0 && strcmp(defensor.tipo, "Fogo")== 0) ||
-        (strcmp(atacante.tipo, "Pedra") == 0 && strcmp(defensor.tipo, "Gelo")== 0)) {
-        dano = (atacante.ataque * 0.8) - defensor.defesa; // Reduz o dano em 20% para relações de tipo desfavoráveis
+    if((strcmp(atacante.tipo, "eletrico") == 0 && strcmp(defensor.tipo, "agua") == 0)||
+     (strcmp(atacante.tipo, "agua") == 0 && strcmp(defensor.tipo, "fogo") == 0) || 
+     (strcmp(atacante.tipo, "fogo") == 0 && strcmp(defensor.tipo, "gelo")== 0) || 
+     (strcmp(atacante.tipo, "gelo") == 0 && strcmp(defensor.tipo, "pedra")== 0) || 
+     (strcmp(atacante.tipo, "pedra") == 0 && strcmp(defensor.tipo, "eletrico")== 0)) {
+        dano = atacante.ataque * 1.2; // Aumenta o dano em 20% para relações de tipo favoráveis
+    } else if((strcmp(atacante.tipo, "eletrico") == 0 && strcmp(defensor.tipo, "pedra") == 0) ||
+     (strcmp(atacante.tipo, "agua") == 0 && strcmp(defensor.tipo, "eletrico") == 0) ||
+      (strcmp(atacante.tipo, "fogo") == 0 && strcmp(defensor.tipo, "agua")== 0) ||
+       (strcmp(atacante.tipo, "gelo") == 0 && strcmp(defensor.tipo, "fogo")== 0) ||
+        (strcmp(atacante.tipo, "pedra") == 0 && strcmp(defensor.tipo, "gelo")== 0)) {
+        dano = atacante.ataque * 0.8; // Reduz o dano em 20% para relações de tipo desfavoráveis
     } else {
-        dano = atacante.ataque - defensor.defesa; // Dano padrão se os tipos forem iguais
+        dano = atacante.ataque; // Dano padrão se os tipos forem iguais
     }
 
     return dano; // Retorna o dano calculado
@@ -62,7 +62,7 @@ int lutar(Pokemon *p1, Pokemon *p2){
 
         // Se o dano do pokemon 1 for maior que a defesa do pokemon 2, entao o pokemon 2 perde vida igual a diferenca do ataque pela defesa
         if (dano_p1 > p2->defesa) {
-            p2->vida -= dano_p1;
+            p2->vida = p2->vida - (dano_p1 - p2->defesa);
         } else { // caso o contrario o pokemon 2 perde 1 de vida
             p2->vida--;
         }
@@ -77,7 +77,7 @@ int lutar(Pokemon *p1, Pokemon *p2){
         int dano_p2 = calcular_dano(*p2, *p1);
         // Se o dano do pokemon 2 for maior que a defesa do pokemon 1, entao o pokemon 1 perde vida igual a diferenca do ataque pela defesa
         if (dano_p2 > p1->defesa) {
-            p1->vida -= dano_p2;
+            p1->vida = p1->vida - (dano_p2 - p1->defesa);
         } else { // caso o contrario o pokemon 1 perde 1 de vida
             p1->vida--;
         }
@@ -175,13 +175,13 @@ void jogar(char *arquivo){
     //Loop para mostrar os pokemons que foram derrotados do jogador 1
     for(int z = 0; z < numero_pokemons_p1; z++){
         if(P1[z].vida <= 0){
-            printf("%s ", P1[z].nome);
+            printf("%s\n", P1[z].nome);
         }
     }
     //Loop para mostrar os pokemons que foram derrotados do Jogador 2
     for(int z = 0; z < numero_pokemons_p2; z++){
         if(P2[z].vida <= 0){
-            printf("%s ", P2[z].nome);
+            printf("%s\n", P2[z].nome);
         }
     }
 
@@ -192,6 +192,6 @@ void jogar(char *arquivo){
 
 // Função principal do programa
 int main() {
-    jogar("teste2.txt"); // Chama a função jogar e passa o nome do arquivo como parametro
+    jogar("teste.txt"); // Chama a função jogar e passa o nome do arquivo como parametro
     return 0; // Retorno da funcao principal
 }

@@ -8,17 +8,18 @@
             "args": [],
             "stopAtEntry": false,
             "externalConsole": true,
-            "cwd": "c:/Users/arthu/OneDrive/Documentos/GitHub/TP_Pokemon_C",
-            "program": "c:/Users/arthu/OneDrive/Documentos/GitHub/TP_Pokemon_C/build/Debug/outDebug",
+            "cwd": "${workspaceFolder}",
+            "program": "${workspaceFolder}/build/Debug/outDebug",
             "MIMode": "gdb",
-            "miDebuggerPath": "gdb",
+            "miDebuggerPath": "C:/MinGW/bin/gdb.exe",
             "setupCommands": [
                 {
                     "description": "Enable pretty-printing for gdb",
                     "text": "-enable-pretty-printing",
                     "ignoreFailures": true
                 }
-            ]
+            ],
+            "preLaunchTask": "C/C++: gcc.exe arquivo de build ativo"  // Nome da tarefa de build
         },
         {
             "name": "C/C++: gcc.exe Compilar e depurar o arquivo ativo",
