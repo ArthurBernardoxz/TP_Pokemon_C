@@ -62,7 +62,7 @@ int lutar(Pokemon *p1, Pokemon *p2, int turno){
     // Loop para a luta acontecer enquanto os dois pokemons tiverem vida > 0, ou seja vivos
     while (p1->vida > 0 && p2->vida > 0) {
 
-        if(turno){
+        if(turno){ //se turno igual a 1 o jogador 1 comeca atacando
             // primeiro calculamos o dano do primeiro pokemon
             float dano_p1 = calcular_dano(*p1, *p2);
 
@@ -79,7 +79,7 @@ int lutar(Pokemon *p1, Pokemon *p2, int turno){
                 return 1; // Retorna 1 indicando que pokemon 1 venceu
             }
             turno = 0;
-        } else {
+        } else { //se turno igual a zero jogador 2 que joga
             // Ataque do p2 contra p1
             float dano_p2 = calcular_dano(*p2, *p1);
             // Se o dano do pokemon 2 for maior que a defesa do pokemon 1, entao o pokemon 1 perde vida igual a diferenca do ataque pela defesa
@@ -111,7 +111,7 @@ void jogar(char *arquivo){
         return; // Retorna a funcao antes logo encerrando o programa
     }
     
-    int numero_pokemons_p1, numero_pokemons_p2, n_vitorias_P1 = 0, n_vitorias_P2 = 0, vitoria_atual = 0; //Declaracao das variaveis utilizadas durante o programa
+    int numero_pokemons_p1, numero_pokemons_p2, n_vitorias_P2 = 0, n_vitorias_P1 = 0, vitoria_atual = 0; //Declaracao das variaveis utilizadas durante o programa
     fscanf(file, "%d %d", &numero_pokemons_p1, &numero_pokemons_p2); // Lê do arquivo o número de pokemons do jogador 1 e 2 e atribui as respectivas variaveis
 
     //verificacao de limites de pokemons de cada jogador
@@ -143,22 +143,22 @@ void jogar(char *arquivo){
     // 2 Etapa - Simulacao das batalas
     //Loop para simular as batalhas entre os pokemons de cada jogador
     int turno = 1;
-    while(n_vitorias_P1 < numero_pokemons_p1 && n_vitorias_P2 < numero_pokemons_p2){
+    while(n_vitorias_P2 < numero_pokemons_p1 && n_vitorias_P1 < numero_pokemons_p2){ // Para rodar enquanto numero de vitorias dos dois jogadores for menor que o numero de pokemons de cada jogador
 
-        vitoria_atual = lutar(&P1[n_vitorias_P1], &P2[n_vitorias_P2], turno); // Realizamos a batalha entre dois pokemnos
+        vitoria_atual = lutar(&P1[n_vitorias_P2], &P2[n_vitorias_P1], turno); // Realizamos a batalha entre dois pokemnos na posicao em que cada jogador venceu, pois se ele venceu e o nvitorias aumenta ele ja puxa o proximo pokeon
 
         // Estrutura para atualizar as vitorias de cada jogador
         if (vitoria_atual == 1) { // Se o retorno da funcao lutar foi 1 entao o jogador 1 venceu uma batalha
-            n_vitorias_P2++;
-            turno = 0;
+            n_vitorias_P1++; // Se o jogador numero 1 ganha aumenta o ndevitorias1
+            turno = 0; //variavel utilizada para controlar qual jogador vai ataca se o turno é zero quem comeca atacando é o jogador 2
         } else if (vitoria_atual == 2) { // Se não se o retorno da funcao lutar foi 2 entao o jogador 2 venceu uma batalha
-            n_vitorias_P1++;
-            turno = 1;
+            n_vitorias_P2++; // Se o jogador numero 2 ganha aumenta o ndevitorias2
+            turno = 1; // variavel utilizada para controlar qual jogador vai atacar seo turno é 1 quem comeca é o jogador 1
         }
     }
 
     // 3 Etapa - Verificar quem venceu a maioria das batalhas e assim quem venceu o jogo
-    if(n_vitorias_P1 > n_vitorias_P2){
+    if(n_vitorias_P2 > n_vitorias_P1){
         printf("Jogador 2 venceu\n");
     } else {
         printf("Jogador 1 venceu\n");
@@ -203,6 +203,6 @@ void jogar(char *arquivo){
 
 // Função principal do programa
 int main() {
-    jogar("teste4.txt"); // Chama a função jogar e passa o nome do arquivo como parametro
+    jogar("teste2.txt"); // Chama a função jogar e passa o nome do arquivo como parametro
     return 0; // Retorno da funcao principal
 }
